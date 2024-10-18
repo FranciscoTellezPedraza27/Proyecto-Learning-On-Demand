@@ -7,16 +7,12 @@
     "lint": "stylelint '**/*.css'"
   },
   "devDependencies": {
-    "jest": "^27.0.6",
+    "jest": "^29.7.0",
     "stylelint": "^16.10.0",
     "stylelint-config-standard": "^36.0.1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "stylelint": "^16.10.0",
-    "stylelint-config-standard": "^36.0.1"
-  }
+  "description": ""
 }
