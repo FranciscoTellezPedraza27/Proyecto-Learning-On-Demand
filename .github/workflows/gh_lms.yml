@@ -36,3 +36,5 @@ jobs:
       - name: Set permissions for stylelint
         run: chmod +x ./node_modules/.bin/stylelint
 
+      - name: Run tests
+        run: npm test
