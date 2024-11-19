@@ -76,11 +76,9 @@ jobs:
       
       #Configuración del secreto 
       - name: Log in to Docker Hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.FRANCISCO }}
-          DOCKER_PASSWORD: ${{ secrets.Francisco-27 }}
         run: |
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          echo "${{ secrets.FRANCISCO }}" | docker login --username $(echo "${{ secrets.FRANCISCO }}" | cut -d':' -f1) --password-stdin
+
 
       - name: Push Docker image to Docker Hub
         run: docker push my-app:latest
