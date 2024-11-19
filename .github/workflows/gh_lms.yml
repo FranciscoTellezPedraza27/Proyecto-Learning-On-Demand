@@ -60,12 +60,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-
-      # Prueba la conexión SSH
-      - name: Test SSH connection
-        run: ssh -T git@github.com
-
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts7
+          
       # Publica la imagen Docker en Docker Hub
       - name: Push Docker image to Docker Hub
         run: docker push my-app:latest
