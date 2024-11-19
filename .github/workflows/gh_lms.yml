@@ -1,44 +1,63 @@
-# This is a basic workflow to help you get started with Actions
+# Este workflow define un pipeline básico de integración continua con GitHub Actions
 
 name: Integracion
 
-# Controls when the workflow will run
+# Controla cuándo se ejecutará el workflow
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # Ejecuta el workflow en eventos de push o pull request solo en la rama "main"
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
+  # Permite ejecutar el workflow manualmente desde GitHub
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # Definición del trabajo de construcción
   build:
-    # The type of runner that the job will run on
+    # Define el sistema operativo sobre el cual se ejecutarán las acciones (Ubuntu)
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Clona el repositorio en el ambiente de trabajo
       - uses: actions/checkout@v4
 
+      # Configura Node.js en la versión especificada para usar en el proyecto
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
+      # Instala las dependencias de npm definidas en el proyecto
       - name: Install dependencies
         run: npm install
 
+      # Otorga permisos de ejecución al archivo stylelint en node_modules
       - name: Set permissions for stylelint
         run: chmod +x ./node_modules/.bin/stylelint
 
+      # Limpia la caché de npm para evitar posibles conflictos con instalaciones previas
       - name: Clean npm cache
         run: npm cache clean --force
 
+      # Otorga permisos de ejecución al archivo jest en node_modules para ejecutar pruebas
       - name: Set permissions for Jest
         run: chmod +x ./node_modules/.bin/jest
 
+      #Se agregan las lineas de comando de acuerdo a lo solicitado
+      #Empaqueta todos los archivos
+      - name: Package artifact
+        run: zip -r application.zip
+
+      #Almacenamiento de artefactos
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: application-artifact
+          path: application.zip
+      
+      #Despliegue atuomatizado
+      - name: Deploy locally with docker
+        run: |
+          docker build -t my-app
+          docker run -d -p 8080:8080 my-app
