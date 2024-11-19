@@ -62,7 +62,7 @@ jobs:
       #Despliegue atuomatizado
       - name: Deploy locally with docker
         run: |
-          docker build -t my-app
+          docker build -t my-app .
           docker run -d -p 8080:8080 my-app
 
       #Construir una imagen
