@@ -74,11 +74,15 @@ jobs:
         run: |
           docker run -d -p 8081:8080 --name test-container my-app
       
-      #Configuración del secreto 
-      - name: Log in to Docker Hub
-        run: |
-          echo "${{ secrets.FRANCISCO }}" | docker login --username $(echo "${{ secrets.FRANCISCO }}" | cut -d':' -f1) --password-stdin
-
+          - name: Set up SSH
+          run: |
+            mkdir -p ~/.ssh
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+  
+      - name: Test SSH connection
+        run: ssh -T git@github.com
 
       - name: Push Docker image to Docker Hub
         run: docker push my-app:latest
