@@ -44,10 +44,13 @@ jobs:
       - name: Set permissions for Jest
         run: chmod +x ./node_modules/.bin/jest
 
+      - name: List files (debugging)
+        run: ls -la
+
       #Se agregan las lineas de comando de acuerdo a lo solicitado
       #Empaqueta todos los archivos
       - name: Package artifact
-        run: zip -r application.zip
+        run: zip -r application.zip .
 
       #Almacenamiento de artefactos
       - name: Upload artifact
